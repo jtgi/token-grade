@@ -108,7 +108,7 @@ export default function Home() {
             value={address}
             cursor={isLoading ? "wait" : "text"}
             focusBorderColor={"gray.600"}
-            onChange={(e) => setAddress(e.target.value)}
+            onChange={(e) => setAddress(e.target.value as any)}
             disabled={isLoading}
             placeholder="0x938..."
             bg={"gray.800"}

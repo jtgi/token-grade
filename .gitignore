@@ -35,6 +35,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# ignore build files 
-./forge
-forge
+forge/test
+forget/cache
