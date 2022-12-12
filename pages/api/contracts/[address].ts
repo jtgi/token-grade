@@ -27,13 +27,14 @@ export default async function handler(
     const { stdout, stderr } = await runForge(address, { ttl: 30000 });
     const results = parseResponse(stdout);
     return res.status(200).json({ results });
-  } catch (e) {
+  } catch (e: any) {
     console.error(e);
     return res
       .status(400)
       .json({
         error:
-          "Something went wrong trying to validate that contract. Try again or try another.",
+          "Failed to simulate transfers",
+        detail: ""
       });
   } finally {
     fs.rm(`${process.cwd()}/forge/test/${address}`, { recursive: true, force: true });

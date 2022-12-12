@@ -37,7 +37,7 @@ export default function Home() {
 
   const { isLoading, data, error, refetch } = useQuery<
     { results: Filter[] },
-    { error: string }
+    { error: string, detail: string }
   >(
     ["permissions", query],
     async () =>
@@ -90,7 +90,7 @@ export default function Home() {
               &gt; token grade
             </Text>
             <Text align={"center"}>
-              Check any contract for marketplace restrictions.
+              Check any contract for marketplace restrictions
             </Text>
           </Box>
           <Input
@@ -126,12 +126,12 @@ export default function Home() {
         <Stack bg={"white"} color={"gray.800"} borderBottomRadius={"lg"} boxShadow="lg">
           {error && (
             <Box padding="8">
-              <Alert status="error" variant={"subtle"} alignItems={"start"}>
+              <Alert variant={"subtle"} alignItems={"start"} wordBreak="break-all">
                 <AlertIcon />
                 <Box>
                   <AlertTitle>We couldn&apos;t verify that contract</AlertTitle>
                   <AlertDescription display="block">
-                    {error!.error}
+                    Are you sure that&apos;s the right address?
                   </AlertDescription>
                 </Box>
               </Alert>
