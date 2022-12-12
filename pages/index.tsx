@@ -1,5 +1,4 @@
 import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
-import { useRouter } from "next/router";
 
 import {
   Alert,
@@ -7,7 +6,7 @@ import {
   AlertIcon,
   AlertTitle,
   Box, Collapse, Grid,
-  GridItem, Input, SkeletonCircle, Stack,
+  GridItem, Input, keyframes, SkeletonCircle, Stack,
   Text
 } from "@chakra-ui/react";
 import { isAddress } from "@ethersproject/address";
@@ -18,32 +17,43 @@ import { useQuery } from "react-query";
 import { operators } from "../lib/operators";
 import { Filter } from "../types";
 
-export default function Home() {
-  const router = useRouter();
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  //TODO: fix this
-  const q = useRef<string | undefined>(router.query.q as string);
-  const [query, setQuery] = useState<string | undefined>(q.current && isAddress(q.current) ? q.current : '');
-  const [address, setAddress] = useState(q.current || '');
-
-  useQueryParamSync("q", query);
-
-  const { isLoading, data, error, refetch } = useQuery<
-    { results: Filter[] },
-    { error: string, detail: string }
-  >(
-    ["permissions", query],
+function useContractSimulation(address?: string) {
+  return useQuery<{ results: Filter[] }, { error: string; detail: string }>(
+    ["permissions", address],
     async () =>
       await axios
         .get(`/api/contracts/${address}`)
         .then((res) => res.data)
         .catch((err) => Promise.reject(err.response.data)),
-    { enabled: !!query && isAddress(query) }
+    {
+      enabled: !!address && isAddress(address),
+    }
   );
+}
 
-  useEffect(() => inputRef.current?.focus())
+const borderFlicker = keyframes`
+  from { border-color: #8fa8b6; }
+  to { border-color: #2f3d53; }
+`;
 
+const pulse = keyframes`
+  from { transform: scale(0.95); }
+  to { transform: scale(1); }
+`;
+
+export default function Home() {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const [address, setAddress] = useState();
+  const { isLoading, data, error } = useContractSimulation(address);
+
+  useQueryParamSync("q", address);
+  useEffect(() => {
+    inputRef.current?.focus();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  
+  const validAddress = address && isAddress(address);
   const blocked = data?.results.filter((res: Filter) => res.disabled) || [];
   const allowed = data?.results.filter((res: Filter) => !res.disabled) || [];
 
@@ -63,14 +73,16 @@ export default function Home() {
         spacing={0}
         maxWidth={650}
         boxShadow={"lg"}
-        borderRadius={10}
+        borderRadius={8}
         w={["90%", "75%", "50%", "50%"]}
       >
         <Stack
           spacing={5}
-          borderRadius={10}
-          borderBottomRadius={!!query && isAddress(query) ? 0 : 10}
+          borderRadius={8}
+          transform={"scale(1)"}
+          borderBottomRadius={Boolean(data) ? 0 : 8}
           border="1px solid rgb(31 41 75)"
+          animation={` 0.5s ease-in-out infinity`}
           background={"rgb(31 41 55)"}
           padding={8}
         >
@@ -84,32 +96,19 @@ export default function Home() {
               &gt; token grade
             </Text>
             <Text align={"center"}>
-              Check any contract for marketplace restrictions
+              {!isLoading && 'Check any contract for marketplace restrictions'}
+              {isLoading && `Simulating transfers on ${operators.length} marketplaces...`}
             </Text>
           </Box>
           <Input
             ref={inputRef}
             borderColor={"gray.700"}
             name="address"
+            animation={isLoading ? `${borderFlicker} 0.5s ease-in-out infinite`: undefined}
             value={address}
+            cursor={isLoading ? "wait" : "text"}
             focusBorderColor={"gray.600"}
-            autoFocus
-            onChange={(e) => {
-              const a = e.target.value;
-              setAddress(a);
-              if (isAddress(a)) {
-                setQuery(a);
-                refetch();
-              }
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-              if (address && isAddress(address)) {
-                setQuery(address);
-                refetch();
-              }
-              }
-            }}
+            onChange={(e) => setAddress(e.target.value)}
             disabled={isLoading}
             placeholder="0x938..."
             bg={"gray.800"}
@@ -117,7 +116,7 @@ export default function Home() {
           />
         </Stack>
 
-        <Stack bg={"white"} color={"gray.800"} borderBottomRadius={"lg"} boxShadow="lg">
+        <Stack bg={"white"} color={"gray.800"} borderBottomRadius={8} boxShadow="lg">
           {error && (
             <Box padding="8">
               <Alert variant={"subtle"} alignItems={"start"} wordBreak="break-all">
@@ -132,7 +131,7 @@ export default function Home() {
             </Box>
           )}
 
-          <Collapse animateOpacity in={isLoading || !!data}>
+          <Collapse animateOpacity in={Boolean(data)}>
             {isLoading && <Box padding="8">
               <Text fontSize={"lg"} fontWeight="bold">
                 Checking {operators.length} Marketplaces...

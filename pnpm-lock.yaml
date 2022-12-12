@@ -23,6 +23,7 @@ specifiers:
   react-hot-toast: ^2.4.0
   react-query: ^3.39.2
   typescript: 4.9.4
+  use-client-router: ^1.0.4
 
 dependencies:
   '@chakra-ui/icons': 2.0.13_react@18.2.0
@@ -46,6 +47,7 @@ dependencies:
   react-hot-toast: 2.4.0_biqbaboplfbrettd7655fr4n2y
   react-query: 3.39.2_biqbaboplfbrettd7655fr4n2y
   typescript: 4.9.4
+  use-client-router: 1.0.4_next@13.0.6
 
 devDependencies:
   '@types/fs-extra': 9.0.13
@@ -3334,6 +3336,10 @@ packages:
     resolution: {integrity: sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==}
     dev: false
 
+  /path-to-regexp/6.2.1:
+    resolution: {integrity: sha512-JLyh7xT1kizaEvcaXOQwOc2/Yhw6KZOvPf1S8401UyLk86CU79LN3vl7ztXGm/pZ+YjoyAJ4rxmHwbkBXJX+yw==}
+    dev: false
+
   /path-type/4.0.0:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
@@ -3550,6 +3556,11 @@ packages:
 
   /remove-accents/0.4.2:
     resolution: {integrity: sha512-7pXIJqJOq5tFgG1A2Zxti3Ht8jJF337m4sowbuHsW30ZnkQFnDzy9qBNhgzX8ZLW4+UBcXiiR7SwR6pokHsxiA==}
+    dev: false
+
+  /replace-string/3.1.0:
+    resolution: {integrity: sha512-yPpxc4ZR2makceA9hy/jHNqc7QVkd4Je/N0WRHm6bs3PtivPuPynxE5ejU/mp5EhnCv8+uZL7vhz8rkluSlx+Q==}
+    engines: {node: '>=8'}
     dev: false
 
   /resolve-from/4.0.0:
@@ -3886,6 +3897,16 @@ packages:
       '@types/react': 18.0.26
       react: 18.2.0
       tslib: 2.4.1
+    dev: false
+
+  /use-client-router/1.0.4_next@13.0.6:
+    resolution: {integrity: sha512-7Jdk7QuWns5j/VaoP432pXX3wWbRffVshVl5Ooxm1iPmlDyDLskgszcfTxBiNe26qZ+lTT7FldopY7WJRIWNWA==}
+    peerDependencies:
+      next: ^10.0.0
+    dependencies:
+      next: 13.0.6_biqbaboplfbrettd7655fr4n2y
+      path-to-regexp: 6.2.1
+      replace-string: 3.1.0
     dev: false
 
   /use-sidecar/1.1.2_kzbn2opkn2327fwg5yzwzya5o4:
