@@ -34,11 +34,11 @@ export default async function handler(
       .json({
         error:
           "Failed to simulate transfers",
-        detail: ""
+        detail: ''
       });
   } finally {
-    fs.rm(`${process.cwd()}/forge/test/${address}`, { recursive: true, force: true });
-    fs.rm(`${process.cwd()}/forge/out/${address}`, { recursive: true, force: true });
+    // fs.rm(`${process.cwd()}/forge/test/${address}`, { recursive: true, force: true });
+    // fs.rm(`${process.cwd()}/forge/out/${address}`, { recursive: true, force: true });
   }
 }
 
@@ -78,7 +78,7 @@ function parseResponse(
 
 function runForge(
   address: string,
-  { ttl = 10000 }
+  { ttl = 20000 }
 ): Promise<{ stdout: string; stderr: string }> {
   return new Promise((resolve, reject) => {
     const timeout = setTimeout(() => {
@@ -97,15 +97,6 @@ function runForge(
     );
   });
 }
-
-const foundryTOML = `
-[profile.default]
-src = "src"
-out = "out"
-libs = ["lib"]
-solc = "0.8.17" 
-eth-rpc-url = "https://mainnet.infura.io"
-`;
 
 const createContract = (
   contract: string,

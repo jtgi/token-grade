@@ -104,7 +104,7 @@ export default function Home() {
             ref={inputRef}
             borderColor={"gray.700"}
             name="address"
-            animation={isLoading ? `${borderFlicker} 0.5s ease-in-out infinite`: undefined}
+            animation={isLoading ? `${pulse} 0.5s ease-in-out infinite`: undefined}
             value={address}
             cursor={isLoading ? "wait" : "text"}
             focusBorderColor={"gray.600"}
