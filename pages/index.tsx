@@ -69,7 +69,7 @@ export default function Home() {
         spacing={0}
         maxWidth={650}
         boxShadow={"lg"}
-          borderRadius={10}
+        borderRadius={10}
         w={["90%", "75%", "50%", "50%"]}
       >
         <Stack
@@ -78,7 +78,7 @@ export default function Home() {
           borderBottomRadius={!!query && isAddress(query) ? 0 : 10}
           border="1px solid rgb(31 41 75)"
           background={"rgb(31 41 55)"}
-          padding={10}
+          padding={8}
         >
           <Box>
             <Text
@@ -90,7 +90,7 @@ export default function Home() {
               &gt; token grade
             </Text>
             <Text align={"center"}>
-              Check any contract for transfer restrictions.
+              Check any contract for marketplace restrictions.
             </Text>
           </Box>
           <Input
@@ -125,7 +125,7 @@ export default function Home() {
 
         <Stack bg={"white"} color={"gray.800"} borderBottomRadius={"lg"} boxShadow="lg">
           {error && (
-            <Box padding="5">
+            <Box padding="8">
               <Alert status="error" variant={"subtle"} alignItems={"start"}>
                 <AlertIcon />
                 <Box>
@@ -139,7 +139,7 @@ export default function Home() {
           )}
 
           <Collapse animateOpacity in={isLoading || !!data}>
-            {isLoading && <Box padding="5">
+            {isLoading && <Box padding="8">
               <Text fontSize={"lg"} fontWeight="bold">
                 Checking {operators.length} Marketplaces...
               </Text>
@@ -161,7 +161,7 @@ export default function Home() {
             </Box>}
 
             {data && (
-              <Box padding="5">
+              <Box padding="8">
                 <Text fontSize={"lg"} fontWeight="bold">
                   {blocked.length === 0 && "No Marketplace Blocked"}
                   {blocked.length === 1 && "1 Marketplace Blocked"}
