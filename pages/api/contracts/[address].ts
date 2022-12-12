@@ -27,7 +27,6 @@ export default async function handler(
   }
 
   address = ethers.utils.getAddress(address);
-  console.log({address, raw})
 
   if ((await provider.getCode(address)) === "0x") {
     return res.status(400).json({
@@ -35,13 +34,11 @@ export default async function handler(
     });
   }
 
-  console.log({address, raw})
   const [test721, test1155] = await Promise.all([
     is721(address),
     is1155(address),
   ]);
 
-  console.log({address, raw})
   if (!test721 && !test1155) {
     return res.status(400).json({
       error: `Contract at is not an ERC721 or ERC1155`,

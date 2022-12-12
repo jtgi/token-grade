@@ -2,9 +2,7 @@ import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
 
 import {
   Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
+  AlertDescription, AlertTitle,
   Box,
   Collapse,
   Grid,
@@ -83,7 +81,7 @@ export default function Home() {
           spacing={5}
           borderRadius={8}
           transform={"scale(1)"}
-          borderBottomRadius={Boolean(data) ? 0 : 8}
+          borderBottomRadius={!!data || !!error ? 0 : 8}
           border="1px solid rgb(31 41 75)"
           animation={` 0.5s ease-in-out infinity`}
           background={"rgb(31 41 55)"}
@@ -130,19 +128,16 @@ export default function Home() {
           boxShadow="lg"
         >
           <Collapse animateOpacity in={Boolean(error)}>
-            {error && (
-              <Box padding="8">
-                <Alert variant={"subtle"} alignItems={"start"}>
-                  <AlertIcon />
+              <Box padding="5">
+                <Alert variant={"subtle"} bg="none" justifyContent={'center'} textAlign="center" >
                   <Box>
-                    <AlertTitle>{error.error}</AlertTitle>
+                    <AlertTitle>{error?.error}</AlertTitle>
                     <AlertDescription display="block">
                       You sure that&apos;s the right address?
                     </AlertDescription>
                   </Box>
                 </Alert>
               </Box>
-            )}
           </Collapse>
 
           <Collapse animateOpacity in={!!data}>
