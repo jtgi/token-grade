@@ -5,8 +5,12 @@ import {
   AlertDescription,
   AlertIcon,
   AlertTitle,
-  Box, Collapse, Grid,
-  GridItem, Input, keyframes, SkeletonCircle, Stack,
+  Box,
+  Collapse,
+  Grid,
+  GridItem,
+  Input,
+  keyframes, Stack,
   Text
 } from "@chakra-ui/react";
 import { isAddress } from "@ethersproject/address";
@@ -14,7 +18,6 @@ import axios from "axios";
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
 import { useQuery } from "react-query";
-import { operators } from "../lib/operators";
 import { Filter } from "../types";
 
 function useContractSimulation(address?: string) {
@@ -37,8 +40,8 @@ const borderFlicker = keyframes`
 `;
 
 const pulse = keyframes`
-  from { transform: scale(0.95); }
-  to { transform: scale(1); }
+  from { transform: scale(1); }
+  to { transform: scale(1.01); }
 `;
 
 export default function Home() {
@@ -50,9 +53,9 @@ export default function Home() {
   useQueryParamSync("q", address);
   useEffect(() => {
     inputRef.current?.focus();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
+
   const validAddress = address && isAddress(address);
   const blocked = data?.results.filter((res: Filter) => res.disabled) || [];
   const allowed = data?.results.filter((res: Filter) => !res.disabled) || [];
@@ -96,16 +99,17 @@ export default function Home() {
               &gt; token grade
             </Text>
             <Text align={"center"}>
-              {!isLoading && 'Check any contract for marketplace restrictions'}
-              {isLoading && `Simulating transfers on ${operators.length} marketplaces...`}
+              Check any contract for marketplace restrictions
             </Text>
           </Box>
           <Input
             ref={inputRef}
             borderColor={"gray.700"}
             name="address"
-            animation={isLoading ? `${pulse} 0.5s ease-in-out infinite`: undefined}
             value={address}
+            animation={
+              isLoading ? `${borderFlicker} 0.2s linear infinite` : undefined
+            }
             cursor={isLoading ? "wait" : "text"}
             focusBorderColor={"gray.600"}
             onChange={(e) => setAddress(e.target.value as any)}
@@ -116,25 +120,37 @@ export default function Home() {
           />
         </Stack>
 
-        <Stack bg={"white"} color={"gray.800"} borderBottomRadius={8} boxShadow="lg">
-          {error && (
-            <Box padding="8">
-              <Alert variant={"subtle"} alignItems={"start"} wordBreak="break-all">
-                <AlertIcon />
-                <Box>
-                  <AlertTitle>We couldn&apos;t verify that contract</AlertTitle>
-                  <AlertDescription display="block">
-                    Are you sure that&apos;s the right address?
-                  </AlertDescription>
-                </Box>
-              </Alert>
-            </Box>
-          )}
+        <Stack
+          bg={"white"}
+          color={"gray.800"}
+          background={
+            "linear-gradient(to bottom, rgba(255, 255, 255, 0.25) 0%, rgba(0, 0, 0, 0.15) 100%), radial-gradient(at top center, rgba(255, 255, 255, 0.40) 0%, rgba(0, 0, 0, 0.40) 120%) #FFF"}
+          backgroundBlendMode="multiply, multiply"
+          borderBottomRadius={8}
+          boxShadow="lg"
+        >
+          <Collapse animateOpacity in={Boolean(error)}>
+            {error && (
+              <Box padding="8">
+                <Alert variant={"subtle"} alignItems={"start"}>
+                  <AlertIcon />
+                  <Box>
+                    <AlertTitle>{error.error}</AlertTitle>
+                    <AlertDescription display="block">
+                      You sure that&apos;s the right address?
+                    </AlertDescription>
+                  </Box>
+                </Alert>
+              </Box>
+            )}
+          </Collapse>
 
-          <Collapse animateOpacity in={Boolean(data)}>
-            {isLoading && <Box padding="8">
-              <Text fontSize={"lg"} fontWeight="bold">
-                Checking {operators.length} Marketplaces...
+          <Collapse animateOpacity in={!!data}>
+            <Box padding="8" pt="5">
+              <Text fontSize={"lg"} fontWeight="bold" mb="2">
+                {blocked.length === 0 && "No Marketplaces Blocked"}
+                {blocked.length === 1 && "1 Marketplace Blocked"}
+                {blocked.length > 1 && `${blocked.length} Marketplaces Blocked`}
               </Text>
               <Grid
                 templateColumns={{
@@ -142,44 +158,18 @@ export default function Home() {
                   sm: "repeat(1, 1fr)",
                 }}
               >
-                {operators.map((res: Filter) => (
+                {(data?.results || []).map((res: Filter) => (
                   <GridItem key={res.address}>
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
-                      <SkeletonCircle size="4" mr="2" />
-                      {res.name}
-                    </Box>
+                    {res.disabled ? (
+                      <WarningIcon color={"red.700"} mt={-1} mr="1.5" />
+                    ) : (
+                      <CheckCircleIcon color={"green.700"} mt={-1} mr="1.5" />
+                    )}
+                    {res.name}
                   </GridItem>
                 ))}
               </Grid>
-            </Box>}
-
-            {data && (
-              <Box padding="8">
-                <Text fontSize={"lg"} fontWeight="bold">
-                  {blocked.length === 0 && "No Marketplaces Blocked"}
-                  {blocked.length === 1 && "1 Marketplace Blocked"}
-                  {blocked.length > 1 &&
-                    `${blocked.length} Marketplaces Blocked`}
-                </Text>
-                <Grid
-                  templateColumns={{
-                    md: "repeat(2, 1fr)",
-                    sm: "repeat(1, 1fr)",
-                  }}
-                >
-                  {data.results.map((res: Filter) => (
-                    <GridItem key={res.address}>
-                      {res.disabled ? (
-                        <WarningIcon color={"red.700"} mt={-1} />
-                      ) : (
-                        <CheckCircleIcon color={"green.700"} mt={-1} />
-                      )}{" "}
-                      {res.name}
-                    </GridItem>
-                  ))}
-                </Grid>
-              </Box>
-            )}
+            </Box>
           </Collapse>
         </Stack>
       </Stack>
