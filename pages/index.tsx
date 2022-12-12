@@ -156,7 +156,7 @@ export default function Home() {
             {data && (
               <Box padding="8">
                 <Text fontSize={"lg"} fontWeight="bold">
-                  {blocked.length === 0 && "No Marketplace Blocked"}
+                  {blocked.length === 0 && "No Marketplaces Blocked"}
                   {blocked.length === 1 && "1 Marketplace Blocked"}
                   {blocked.length > 1 &&
                     `${blocked.length} Marketplaces Blocked`}

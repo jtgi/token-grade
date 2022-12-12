@@ -2,6 +2,12 @@
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## TODO
+- add 1155 support
+- detect 721 vs 1155
+- add errors
+- fin
+
 ## Getting Started
 
 First, run the development server:
