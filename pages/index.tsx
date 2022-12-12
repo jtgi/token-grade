@@ -1,4 +1,4 @@
-import { CheckIcon, NotAllowedIcon } from "@chakra-ui/icons";
+import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router";
 
 import {
@@ -171,9 +171,9 @@ export default function Home() {
                   {data.results.map((res: Filter) => (
                     <GridItem key={res.address}>
                       {res.disabled ? (
-                        <NotAllowedIcon color={"red.700"} />
+                        <WarningIcon color={"red.700"} mt={-1} />
                       ) : (
-                        <CheckIcon color={"green.700"} />
+                        <CheckCircleIcon color={"green.700"} mt={-1} />
                       )}{" "}
                       {res.name}
                     </GridItem>
