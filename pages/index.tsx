@@ -1,5 +1,4 @@
 import { CheckIcon, NotAllowedIcon } from "@chakra-ui/icons";
-import { isValidMotionProp, motion } from "framer-motion";
 import { useRouter } from "next/router";
 
 import {
@@ -7,9 +6,8 @@ import {
   AlertDescription,
   AlertIcon,
   AlertTitle,
-  Box, chakra, Collapse, Grid,
-  GridItem, Input, shouldForwardProp,
-  SkeletonCircle, Stack,
+  Box, Collapse, Grid,
+  GridItem, Input, SkeletonCircle, Stack,
   Text
 } from "@chakra-ui/react";
 import { isAddress } from "@ethersproject/address";
@@ -20,18 +18,14 @@ import { useQuery } from "react-query";
 import { operators } from "../lib/operators";
 import { Filter } from "../types";
 
-const FramerBox = chakra(motion.div, {
-  shouldForwardProp: (prop) =>
-    isValidMotionProp(prop) || shouldForwardProp(prop),
-});
-
 export default function Home() {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
+
+  //TODO: fix this
   const q = useRef<string | undefined>(router.query.q as string);
   const [query, setQuery] = useState<string | undefined>(q.current && isAddress(q.current) ? q.current : '');
   const [address, setAddress] = useState(q.current || '');
-  console.log({q})
 
   useQueryParamSync("q", query);
 

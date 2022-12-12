@@ -36,4 +36,4 @@ COPY --from=builder /app ./
 
 USER nextjs
 
-CMD ["npm", "run", "start"]
+CMD ["yarn", "start"]
