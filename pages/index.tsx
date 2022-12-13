@@ -15,6 +15,7 @@ import { isAddress } from "@ethersproject/address";
 import axios from "axios";
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
+import { isMobile } from 'react-device-detect';
 import { useQuery } from "react-query";
 import { Filter } from "../types";
 
@@ -50,7 +51,9 @@ export default function Home() {
 
   useQueryParamSync("q", address);
   useEffect(() => {
-    inputRef.current?.focus();
+    if (!isMobile) {
+      inputRef.current?.focus();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -122,7 +125,7 @@ export default function Home() {
           bg={"white"}
           color={"gray.800"}
           background={
-            "linear-gradient(to bottom, rgba(255, 255, 255, 0.25) 0%, rgba(0, 0, 0, 0.15) 100%), radial-gradient(at top center, rgba(255, 255, 255, 0.40) 0%, rgba(0, 0, 0, 0.40) 120%) #FFF"}
+            "linear-gradient(to bottom, rgba(255, 255, 255, 0.25) 0%, rgba(0, 0, 0, 0.15) 100%), radial-gradient(at top center, rgba(255, 255, 255, 0.70) 0%, rgba(0, 0, 0, 0.20) 120%) #FFF"}
           backgroundBlendMode="multiply, multiply"
           borderBottomRadius={8}
           boxShadow="lg"
