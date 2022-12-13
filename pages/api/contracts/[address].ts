@@ -138,15 +138,16 @@ function runForge(
     }, ttl);
 
     const base = `${process.cwd()}forge`;
-    const cmd = `forge test --silent --root ${base} --contracts ${base}/test/${address} --fork-url ${process
+    const cmd = `forge test --root ${base} --contracts ${base}/test/${address} --fork-url ${process
         .env
         .RPC_URL!} --out ${base}/out --lib-paths ${base}/lib --cache-path ${base}/cache --json`;
 
     process.env.NODE_ENV === 'development' && console.log(cmd);
 
     const child = exec(cmd, (error, stdout, stderr) => {
-      console.log(stderr);
-      console.log(error);
+      console.log('stderr', stderr);
+      console.log('error', error);
+      console.log('stdout', error);
       clearTimeout(timeout);
       return error ? reject(error) : resolve({ stdout, stderr });
     });
