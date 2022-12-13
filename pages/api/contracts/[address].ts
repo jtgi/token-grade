@@ -145,6 +145,8 @@ function runForge(
     process.env.NODE_ENV === 'development' && console.log(cmd);
 
     const child = exec(cmd, (error, stdout, stderr) => {
+      console.log(stderr);
+      console.log(error);
       clearTimeout(timeout);
       return error ? reject(error) : resolve({ stdout, stderr });
     });
