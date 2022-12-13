@@ -137,7 +137,7 @@ function runForge(
       reject(new Error("Forge command timed out"));
     }, ttl);
 
-    const base = `${process.cwd()}/forge`;
+    const base = `${process.cwd()}forge`;
     const cmd = `forge test --silent --root ${base} --contracts ${base}/test/${address} --fork-url ${process
         .env
         .RPC_URL!} --out ${base}/out --lib-paths ${base}/lib --cache-path ${base}/cache --json`;
