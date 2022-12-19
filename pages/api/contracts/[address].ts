@@ -147,7 +147,7 @@ function runForge(
     const child = exec(cmd, (error, stdout, stderr) => {
       console.log('stderr', stderr);
       console.log('error', error);
-      console.log('stdout', error);
+      console.log('stdout', stdout);
       clearTimeout(timeout);
       return error ? reject(error) : resolve({ stdout, stderr });
     });
