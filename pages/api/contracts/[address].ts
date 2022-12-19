@@ -138,9 +138,9 @@ function runForge(
     }, ttl);
 
     const base = `${process.cwd()}forge`;
-    const cmd = `forge test --root ${base} --contracts ${base}/test/${address} --fork-url ${process
-        .env
-        .RPC_URL!} --out ${base}/out --lib-paths ${base}/lib --cache-path ${base}/cache --json`;
+    const cmd = `forge test --verbosity --root ${base} --contracts ${base}/test/${address} --fork-url ${process
+      .env
+      .RPC_URL!} --out ${base}/out --lib-paths ${base}/lib --cache-path ${base}/cache --json`;
 
     process.env.NODE_ENV === 'development' && console.log(cmd);
 
