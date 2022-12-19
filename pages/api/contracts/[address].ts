@@ -185,7 +185,6 @@ contract ValidationTest is Test {
             if (${is721}) {
               IERC721 nftContract = IERC721(contractAddress);
               address owner = nftContract.ownerOf(tokenId);
-              address anon = address(0xdeadbeef);
 
               vm.startPrank(owner);
               try nftContract.setApprovalForAll(operator, true) {} catch (bytes memory) {}
@@ -205,7 +204,6 @@ contract ValidationTest is Test {
             } else {
               IERC1155 nftContract = IERC1155(contractAddress);
               address owner = address(${owner1155});
-              address anon = address(0xdeadbeef);
 
               uint256[] memory tokenIds = new uint256[](1);
               tokenIds[0] = tokenId;
